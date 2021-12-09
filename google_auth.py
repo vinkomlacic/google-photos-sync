@@ -1,13 +1,13 @@
 import logging
 from pathlib import Path
 
-from dotenv import dotenv_values
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 
+from configuration import CONF
+
 LOG = logging.getLogger('google_photos_sync.{}'.format(__name__))
-CONF = dotenv_values('.env')
 
 
 __all__ = ['authenticate', 'GoogleApiAuthError']
@@ -42,7 +42,7 @@ def authenticate():
     # If there is already a user token in the file system, use it
     if token_file_path.exists():
         LOG.debug(f'Using token file to load credentials: {token_file_path}.')
-        credentials = Credentials.from_authorized_user_file(token_file_path.name, scopes)
+        credentials = Credentials.from_authorized_user_file(str(token_file_path), scopes)
 
     # If we loaded the credentials from the token, check if they are valid
     if credentials:
@@ -63,7 +63,7 @@ def authenticate():
     if not credentials:
         LOG.debug(f'Asking the user to provide log in information.')
         client_secret_file_path = Path(CONF['CREDENTIALS_DIR_PATH']) / Path(CONF['CLIENT_SECRET_FILE_NAME'])
-        flow = InstalledAppFlow.from_client_secrets_file(client_secret_file_path.name, scopes)
+        flow = InstalledAppFlow.from_client_secrets_file(str(client_secret_file_path), scopes)
         credentials = flow.run_local_server(port=0)
 
     # Finally, check if any of the steps created the credentials
