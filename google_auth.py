@@ -10,7 +10,7 @@ LOG = logging.getLogger('google_photos_sync.{}'.format(__name__))
 CONF = dotenv_values('.env')
 
 
-__all__ = ['authenticate']
+__all__ = ['authenticate', 'GoogleApiAuthError']
 
 
 class GoogleApiAuthError(Exception):
