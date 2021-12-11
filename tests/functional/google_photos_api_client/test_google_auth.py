@@ -2,7 +2,7 @@ from pathlib import Path
 from unittest import TestCase
 
 from configuration import CONF
-from google_auth import authenticate
+from google_photos_api_client.google_auth import authenticate
 
 
 class TestGoogleAuth(TestCase):
