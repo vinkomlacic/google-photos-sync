@@ -22,7 +22,7 @@ class Album:
     # True if you can create media items in this album.
     # This field is based on the scopes granted and permissions of the album.
     # If the scopes are changed or permissions of the album are changed, this field is updated.
-    is_writable: bool
+    is_writable: Optional[bool]
 
     # The number of media items in the album.
     media_items_count: int
@@ -45,7 +45,10 @@ class Album:
             raise TypeError(f'{self.__class__.__name__}: Title should not be longer than 500 characters.')
 
         self.product_url = str(album['productUrl'])
-        self.is_writable = bool(album['isWritable'])
+
+        is_writable = album.get('isWritable')
+        self.is_writable = bool(is_writable) if is_writable else None
+
         self.media_items_count = int(album['mediaItemsCount'])
         self.cover_photo_base_url = str(album['coverPhotoBaseUrl'])
         self.cover_photo_media_item_id = str(album['coverPhotoMediaItemId'])
