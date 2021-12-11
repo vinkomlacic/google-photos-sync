@@ -3,8 +3,8 @@ import logging
 from googleapiclient.discovery import build
 
 from google_photos_api_client._album_api import GooglePhotosAlbumAPIClient
+from google_photos_api_client._google_auth import authenticate, GoogleApiAuthError
 from google_photos_api_client.exceptions import GooglePhotosAPIError
-from google_photos_api_client.google_auth import authenticate, GoogleApiAuthError
 
 LOG = logging.getLogger('google_photos_sync.{}'.format(__name__))
 
