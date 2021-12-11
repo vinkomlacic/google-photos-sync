@@ -179,3 +179,16 @@ class MediaItem:
 
     # Filename of the media item. This is shown to the user in the item's info section in the Google Photos app.
     filename: str
+
+    def __init__(self, media_item: dict):
+        self.id = str(media_item['id'])
+        self.description = str(media_item['description'])
+        self.product_url = str(media_item['productUrl'])
+        self.base_url = str(media_item['baseUrl'])
+        self.mime_type = str('mimeType')
+        self.media_metadata = MediaMetadata(media_item['mediaMetadata'])
+
+        contributor_info = media_item['contributorInfo']
+        self.contributor_info = ContributorInfo(contributor_info) if contributor_info else None
+
+        self.filename = str(media_item['filename'])

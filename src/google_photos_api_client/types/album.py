@@ -1,4 +1,3 @@
-from json import loads
 from typing import Optional
 
 
@@ -37,17 +36,14 @@ class Album:
     # Identifier for the media item associated with the cover photo.
     cover_photo_media_item_id: str
 
-    def __init__(self, json: str):
-        # Saving this to attribute so we can use it in subclasses
-        self._data: dict = loads(json)
-
-        self.id = str(self._data['id'])
-        self.title = str(self._data['title'])
-        self.product_url = str(self._data['productUrl'])
-        self.is_writable = bool(self._data['isWritable'])
-        self.media_items_count = int(self._data['mediaItemsCount'])
-        self.cover_photo_base_url = str(self._data['coverPhotoBaseUrl'])
-        self.cover_photo_media_item_id = str(self._data['coverPhotoMediaItemId'])
+    def __init__(self, album: dict):
+        self.id = str(album['id'])
+        self.title = str(album['title'])
+        self.product_url = str(album['productUrl'])
+        self.is_writable = bool(album['isWritable'])
+        self.media_items_count = int(album['mediaItemsCount'])
+        self.cover_photo_base_url = str(album['coverPhotoBaseUrl'])
+        self.cover_photo_media_item_id = str(album['coverPhotoMediaItemId'])
 
 
 class SharedAlbumOptions:
@@ -114,15 +110,14 @@ class ShareInfo:
 class SharedAlbum(Album):
     """Representation of an album in Google Photos. Albums are containers for media items.
     If an album has been shared by the application, it contains an extra shareInfo property."""
-    # ... Album properties ...
+    # ... Inherited album properties ...
 
     #  Information related to shared albums. This field is only populated if the album is a shared album,
     #  the developer created the album and the user has granted the photoslibrary.sharing scope.
     share_info: Optional[ShareInfo]
 
-    def __init__(self, json: str):
-        # Creates the self._data dict
-        super().__init__(json)
+    def __init__(self, shared_album: dict):
+        super().__init__(shared_album)
 
-        share_info = self._data.get('shareInfo')
+        share_info = shared_album.get('shareInfo')
         self.share_info = ShareInfo(share_info) if share_info else None
