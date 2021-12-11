@@ -38,7 +38,11 @@ class Album:
 
     def __init__(self, album: dict):
         self.id = str(album['id'])
+
         self.title = str(album['title'])
+        if len(self.title) > 500:
+            raise TypeError('Title should not be longer than 500 characters.')
+
         self.product_url = str(album['productUrl'])
         self.is_writable = bool(album['isWritable'])
         self.media_items_count = int(album['mediaItemsCount'])

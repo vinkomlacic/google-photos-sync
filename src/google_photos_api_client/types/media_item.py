@@ -97,6 +97,8 @@ class Photo:
 
         exposure_time = photo.get('exposureTime')
         self.exposure_time = str(exposure_time) if exposure_time else None
+        if self.exposure_time and not self.exposure_time.endswith('s'):
+            raise TypeError("Exposure time duration string must end with letter 's' for second.")
 
 
 class MediaMetadata:
