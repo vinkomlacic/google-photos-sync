@@ -1,3 +1,6 @@
+from typing import Optional
+
+
 class TextEnrichment:
     """An enrichment containing text."""
     # Text for this enrichment item.
@@ -21,11 +24,11 @@ class LatLng:
     def __init__(self, lat_lng: dict):
         self.latitude = float(lat_lng['latitude'])
         if self.latitude < (-90.0) or self.latitude > 90.0:
-            raise TypeError('Latitude must be in range [-90.0, +90.0]')
+            raise TypeError(f'{self.__class__.__name__}: Latitude must be in range [-90.0, +90.0]')
 
         self.longitude = float(lat_lng['longitude'])
         if self.longitude < (-180.0) or self.longitude > 180.0:
-            raise TypeError('Longitude must be in range [-180.0, 180.0]')
+            raise TypeError(f'{self.__class__.__name__}: Longitude must be in range [-180.0, 180.0]')
 
 
 class Location:
@@ -74,3 +77,31 @@ class EnrichmentItem:
 
     def __init__(self, enrichment_item: dict):
         self.id = str(enrichment_item['id'])
+
+
+class NewEnrichmentItem:
+    """A new enrichment item to be added to an album, used by the albums.addEnrichment call."""
+
+    # Text to be added to the album.
+    text_enrichment: Optional[TextEnrichment]
+
+    # Location to be added to the album.
+    location_enrichment: Optional[LocationEnrichment]
+
+    # Map to be added to the album.
+    map_enrichment: Optional[MapEnrichment]
+
+    def __init__(self, new_enrichment_item: dict):
+        text_enrichment = new_enrichment_item.get('textEnrichment')
+        self.text_enrichment = TextEnrichment(text_enrichment) if text_enrichment else None
+
+        location_enrichment = new_enrichment_item.get('locationEnrichment')
+        self.location_enrichment = LocationEnrichment(location_enrichment) if location_enrichment else None
+
+        map_enrichment = new_enrichment_item.get('mapEnrichment')
+        self.map_enrichment = MapEnrichment(map_enrichment) if map_enrichment else None
+
+        # If all attributes are none
+        if all(attribute is None for attribute in (text_enrichment, location_enrichment, map_enrichment)):
+            raise TypeError(f'{self.__class__.__name__}: at least text, location or map enrichment need to be '
+                            f'specified.')

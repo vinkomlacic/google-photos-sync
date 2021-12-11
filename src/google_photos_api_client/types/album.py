@@ -2,7 +2,7 @@ from enum import Enum
 from typing import Optional
 
 
-__all__ = ['Album', 'SharedAlbum', 'ShareInfo', 'SharedAlbumOptions']
+__all__ = ['Album', 'SharedAlbum', 'ShareInfo', 'SharedAlbumOptions', 'AlbumPosition', 'PositionType']
 
 
 class Album:
