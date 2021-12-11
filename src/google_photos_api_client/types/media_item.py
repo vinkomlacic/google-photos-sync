@@ -98,7 +98,8 @@ class Photo:
         exposure_time = photo.get('exposureTime')
         self.exposure_time = str(exposure_time) if exposure_time else None
         if self.exposure_time and not self.exposure_time.endswith('s'):
-            raise TypeError("Exposure time duration string must end with letter 's' for second.")
+            raise TypeError(f"{self.__class__.__name__}: Exposure time duration string must end with letter 's' for "
+                            f"second.")
 
 
 class MediaMetadata:
@@ -137,7 +138,7 @@ class MediaMetadata:
             self.video = Video(video) if video else None
 
         if self.photo is None and self.video is None:
-            raise TypeError('Either photo or video attribute need to be specified.')
+            raise TypeError(f'{self.__class__.__name__}: Either photo or video attribute need to be specified.')
 
 
 class ContributorInfo:

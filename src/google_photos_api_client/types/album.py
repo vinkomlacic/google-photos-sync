@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Optional
 
 
@@ -41,7 +42,7 @@ class Album:
 
         self.title = str(album['title'])
         if len(self.title) > 500:
-            raise TypeError('Title should not be longer than 500 characters.')
+            raise TypeError(f'{self.__class__.__name__}: Title should not be longer than 500 characters.')
 
         self.product_url = str(album['productUrl'])
         self.is_writable = bool(album['isWritable'])
@@ -125,3 +126,40 @@ class SharedAlbum(Album):
 
         share_info = shared_album.get('shareInfo')
         self.share_info = ShareInfo(share_info) if share_info else None
+
+
+class PositionType(Enum):
+    """Possible positions in an album."""
+
+    # Default value if this enum isn't set.
+    POSITION_TYPE_UNSPECIFIED = 'POSITION_TYPE_UNSPECIFIED'
+    FIRST_IN_ALBUM = 'FIRST_IN_ALBUM'
+    LAST_IN_ALBUM = 'LAST_IN_ALBUM'
+    AFTER_MEDIA_ITEM = 'AFTER_MEDIA_ITEM'
+    AFTER_ENRICHMENT_ITEM = 'AFTER_ENRICHMENT_ITEM'
+
+
+class AlbumPosition:
+    """Specifies a position in an album."""
+
+    # Type of position, for a media or enrichment item.
+    position: PositionType
+
+    # The media item to which the position is relative to. Only used when position type is AFTER_MEDIA_ITEM.
+    relative_media_item_id: Optional[str]
+
+    # The enrichment item to which the position is relative to. Only used when position type is AFTER_ENRICHMENT_ITEM.
+    relative_enrichment_item_id: Optional[str]
+
+    def __init__(self, album_position: dict):
+        self.position = PositionType(album_position['position'])
+
+        relative_media_item_id = album_position.get('relativeMediaItemId')
+        self.relative_media_item_id = str(relative_media_item_id) if relative_media_item_id else None
+
+        relative_enrichment_item_id = album_position.get('relativeEnrichmentItemId')
+        self.relative_enrichment_item_id = str(relative_enrichment_item_id) if relative_enrichment_item_id else None
+
+        if self.relative_media_item_id is None and self.relative_enrichment_item_id:
+            raise TypeError(f'{self.__class__.__name__}: at least relative media item ID or relative enrichment item '
+                            f'ID need to be specified')
