@@ -4,6 +4,8 @@ from typing import Optional
 
 __all__ = ['MediaItem', 'ContributorInfo', 'MediaMetadata', 'Photo', 'Video', 'VideoProcessingStatus']
 
+from google_photos_api_client.types.status import Status
+
 
 class VideoProcessingStatus(Enum):
     """Processing status of a video being uploaded to Google Photos."""
@@ -198,3 +200,63 @@ class MediaItem:
         self.contributor_info = ContributorInfo(contributor_info) if contributor_info else None
 
         self.filename = str(media_item['filename'])
+
+
+class SimpleMediaItem:
+    """A simple media item to be created in Google Photos via an upload token."""
+
+    # A simple media item to be created in Google Photos via an upload token.
+    upload_token: str
+
+    # File name with extension of the media item. This is shown to the user in Google Photos.
+    # The file name specified during the byte upload process is ignored if this field is set.
+    # The file name, including the file extension, shouldn't be more than 255 characters. This is an optional field.
+    file_name: Optional[str]
+
+    def __init__(self, simple_media_item: dict):
+        self.upload_token = str(simple_media_item['upload_token'])
+
+        file_name = simple_media_item.get('fileName')
+        self.file_name = str(file_name) if file_name else None
+
+
+class NewMediaItem:
+    """New media item that's created in a user's Google Photos account."""
+
+    # Description of the media item. This will be shown to the user in the item's info section in the Google Photos
+    # app. This string shouldn't be more than 1000 characters.
+    description: str
+
+    # A new media item that has been uploaded via the included uploadToken.
+    simple_media_item: SimpleMediaItem
+
+    def __init__(self, new_media_item: dict):
+        self.description = str(new_media_item['description'])
+        if len(self.description) > 1000:
+            raise TypeError(f'{self.__class__.__name__}: The description should not be longer than 1000 characters.')
+
+        self.simple_media_item = SimpleMediaItem(new_media_item['simpleMediaItem'])
+
+
+class NewMediaItemResult:
+    """Result of creating a new media item."""
+
+    # The upload token used to create this new media item.
+    upload_token: str
+
+    # If an error occurred during the creation of this media item, this field is populated with information related
+    # to the error. For details regarding this field, see Status.
+    status: Optional[Status]
+
+    # Media item created with the upload token. It's populated if no errors occurred and the media item was created
+    # successfully.
+    media_item: Optional[MediaItem]
+
+    def __init__(self, new_media_item_result: dict):
+        self.upload_token = str(new_media_item_result['uploadToken'])
+
+        status = new_media_item_result.get('status')
+        self.status = Status(status) if status else None
+
+        media_item = new_media_item_result.get('mediaItem')
+        self.media_item = MediaItem(media_item) if media_item else None
