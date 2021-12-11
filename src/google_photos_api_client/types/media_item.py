@@ -134,6 +134,9 @@ class MediaMetadata:
             video = media_metadata.get('video')
             self.video = Video(video) if video else None
 
+        if self.photo is None and self.video is None:
+            raise TypeError('Either photo or video attribute need to be specified.')
+
 
 class ContributorInfo:
     """Information about the user who added the media item. Note that this information is included only if the media
