@@ -1,10 +1,10 @@
 from enum import Enum
 from typing import Optional
 
-
-__all__ = ['MediaItem', 'ContributorInfo', 'MediaMetadata', 'Photo', 'Video', 'VideoProcessingStatus']
-
 from google_photos_api_client.types.status import Status
+
+__all__ = ['MediaItem', 'ContributorInfo', 'MediaMetadata', 'Photo', 'Video', 'VideoProcessingStatus',
+           'NewMediaItemResult', 'NewMediaItem', 'SimpleMediaItem', 'MediaItemResult']
 
 
 class VideoProcessingStatus(Enum):
@@ -259,4 +259,23 @@ class NewMediaItemResult:
         self.status = Status(status) if status else None
 
         media_item = new_media_item_result.get('mediaItem')
+        self.media_item = MediaItem(media_item) if media_item else None
+
+
+class MediaItemResult:
+    """Result of retrieving a media item."""
+
+    # If an error occurred while accessing this media item, this field is populated with information related to the
+    # error. For details regarding this field, see Status.
+    status: Optional[Status]
+
+    # Media item retrieved from the user's library. It's populated if no errors occurred and the media item was
+    # fetched successfully.
+    media_item: Optional[MediaItem]
+
+    def __init__(self, media_item_result: dict):
+        status = media_item_result.get('status')
+        self.status = Status(status) if status else None
+
+        media_item = media_item_result.get('mediaItem')
         self.media_item = MediaItem(media_item) if media_item else None
