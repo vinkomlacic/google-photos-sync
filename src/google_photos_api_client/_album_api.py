@@ -160,6 +160,9 @@ class GooglePhotosAlbumAPIClient:
                 Defaults to false (all albums are returned). This field is ignored if the
                 photoslibrary.readonly.appcreateddata scope is used.
         """
+        if page_size > 50:
+            raise GooglePhotosAPIError('Page size cannot be bigger than 50.')
+
         # Pagination continuation token that will be used in the next query
         next_page_token = page_token
         while True:
