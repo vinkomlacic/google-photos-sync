@@ -10,12 +10,20 @@ from google_photos_api_client.exceptions import GooglePhotosAPIError
 LOG = logging.getLogger('google_photos_sync.{}'.format(__name__))
 
 
-__all__ = ['GooglePhotosAPIServiceBuilder']
+__all__ = ['GooglePhotosAPIServiceBuilder', 'GooglePhotosAPIClient']
 
 
 class GooglePhotosAPIServiceBuilder:
-    """Responsible for creating Google Photos API Service object.
-    TODO: document
+    """Responsible for authenticating and creating Google Photos API Service object for use with API client.
+
+    Example:
+        # Creates service and authenticates to Google
+        service_builder = GooglePhotosAPIServiceBuilder()
+
+        # Use service as context manager to automatically close it after use
+        with service_builder.get_service() as service:
+            client = GooglePhotosAPIClient(service)
+            ...
     """
     SERVICE_NAME = 'photoslibrary'
     SERVICE_VERSION = 'v1'
