@@ -145,7 +145,7 @@ class GooglePhotosAlbumAPIClient:
             Generator[Sequence[Album], None, None]:
         """Lists all albums shown to a user in the Albums tab of the Google Photos app.
 
-        See https://developers.google.com/photos/library/reference/rest/v1/albums/list
+        See https://developers.google.com/photos/library/reference/rest/v1/albums/list for more information.
 
         Implementation note: this function returns a generator. Since every yield statement means a request is
         executed, we want this behavior to be lazily executed so we don't query all albums in the API every time.
