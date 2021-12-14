@@ -1,8 +1,14 @@
 import json
+import logging
 from typing import Generator, Sequence
 
 from google_photos_api_client.exceptions import GooglePhotosAPIError
 from google_photos_api_client.types import Album
+
+LOG = logging.getLogger('google_photos_sync.{}'.format(__name__))
+
+
+__all__ = ['GooglePhotosSharedAlbumAPIClient']
 
 
 class GooglePhotosSharedAlbumAPIClient:
