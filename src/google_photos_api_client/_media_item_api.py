@@ -6,6 +6,7 @@ from google_photos_api_client.exceptions import GooglePhotosAPIError
 from google_photos_api_client.types import (
     AlbumPosition, to_dict, NewMediaItem, NewMediaItemResult, MediaItemResult, MediaItem, Filters
 )
+from google_photos_api_client.utils import log_api_call
 
 LOG = logging.getLogger('google_photos_sync.{}'.format(__name__))
 
@@ -19,6 +20,7 @@ class GooglePhotosMediaItemAPIClient:
     def __init__(self, service):
         self._media_item_api = service.mediaItems()
 
+    @log_api_call(logger=LOG)
     def batch_create(
             self, new_media_items: Sequence[NewMediaItem],
             album_position: Optional[AlbumPosition] = None, album_id: Optional[str] = None
@@ -63,6 +65,7 @@ class GooglePhotosMediaItemAPIClient:
 
         return [NewMediaItemResult(new_media_item_result) for new_media_item_result in response['newMediaItemResults']]
 
+    @log_api_call(logger=LOG)
     def batch_get(self, media_item_ids: Sequence[str]) -> Sequence[MediaItemResult]:
         """Returns the list of media items for the specified media item identifiers. Items are returned in the same
         order as the supplied identifiers.
@@ -80,6 +83,7 @@ class GooglePhotosMediaItemAPIClient:
 
         return [MediaItemResult(media_item_result) for media_item_result in response['mediaItemResults']]
 
+    @log_api_call(logger=LOG)
     def get(self, media_item_id: str) -> MediaItem:
         """Returns the media item for the specified media item identifier.
 
@@ -91,6 +95,7 @@ class GooglePhotosMediaItemAPIClient:
         response = self._media_item_api.get(media_item_id).execute()
         return MediaItem(response)
 
+    @log_api_call(logger=LOG)
     def list(self, page_size: Optional[int] = 25, page_token: Optional[str] = None) -> Generator:
         """List all media items from a user's Google Photos library.
 
@@ -127,6 +132,7 @@ class GooglePhotosMediaItemAPIClient:
             if next_page_token is None:
                 break
 
+    @log_api_call(logger=LOG)
     def patch(self, media_item: MediaItem, update_mask: str) -> MediaItem:
         """Update the media item with the specified id. Only the id and description fields of the media item are read.
         The media item must have been created by the developer via the API and must be owned by the user.

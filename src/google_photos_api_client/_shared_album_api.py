@@ -4,6 +4,7 @@ from typing import Generator, Sequence
 
 from google_photos_api_client.exceptions import GooglePhotosAPIError
 from google_photos_api_client.types import Album
+from google_photos_api_client.utils import log_api_call
 
 LOG = logging.getLogger('google_photos_sync.{}'.format(__name__))
 
@@ -18,6 +19,7 @@ class GooglePhotosSharedAlbumAPIClient:
     def __init__(self, service):
         self._shared_album_api = service.shared_albums()
 
+    @log_api_call(logger=LOG)
     def get(self, share_token: str) -> Album:
         """Returns the album based on the specified shareToken.
 
@@ -28,6 +30,7 @@ class GooglePhotosSharedAlbumAPIClient:
 
         return Album(response)
 
+    @log_api_call(logger=LOG)
     def join(self, share_token: str) -> Album:
         """Joins a shared album on behalf of the Google Photos user.
 
@@ -41,6 +44,7 @@ class GooglePhotosSharedAlbumAPIClient:
 
         return Album(response['album'])
 
+    @log_api_call(logger=LOG)
     def leave(self, share_token: str):
         """Leaves a previously-joined shared album on behalf of the Google Photos user. The user must not own this
         album.
@@ -54,6 +58,7 @@ class GooglePhotosSharedAlbumAPIClient:
         # If successful, the response body is empty.
         request.execute()
 
+    @log_api_call(logger=LOG)
     def list(self, page_size: int = 20, page_token: str = None, exclude_non_app_created_data: bool = False) -> \
             Generator[Sequence[Album], None, None]:
         """Lists all shared albums available in the Sharing tab of the user's Google Photos app.

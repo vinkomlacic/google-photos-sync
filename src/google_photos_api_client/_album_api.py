@@ -5,6 +5,7 @@ from typing import Sequence, Generator
 from google_photos_api_client.exceptions import GooglePhotosAPIError
 from google_photos_api_client.types import NewEnrichmentItem, AlbumPosition, to_dict, EnrichmentItem, Album, \
     SharedAlbumOptions, ShareInfo
+from google_photos_api_client.utils import log_api_call
 
 LOG = logging.getLogger('google_photos_sync.{}'.format(__name__))
 
@@ -18,6 +19,7 @@ class GooglePhotosAlbumAPIClient:
     def __init__(self, service):
         self._album_api = service.albums()
 
+    @log_api_call(logger=LOG)
     def add_enrichment(
             self, album_id: str, new_enrichment_item: NewEnrichmentItem, album_position: AlbumPosition
     ) -> EnrichmentItem:
@@ -38,6 +40,7 @@ class GooglePhotosAlbumAPIClient:
 
         return EnrichmentItem(response['enrichmentItem'])
 
+    @log_api_call(logger=LOG)
     def batch_add_media_items(self, album_id: str, media_item_ids: Sequence[str]):
         """Adds one or more media items in a user's Google Photos library to an album. The media items and albums
         must have been created by the developer via the API.
@@ -75,6 +78,7 @@ class GooglePhotosAlbumAPIClient:
         # If this request does not fail, it will not return anything
         request.execute()
 
+    @log_api_call(logger=LOG)
     def batch_remove_media_items(self, album_id: str, media_item_ids: Sequence[str]):
         """Removes one or more media items from a specified album. The media items and the album must have been
         created by the developer via the API.
@@ -115,6 +119,7 @@ class GooglePhotosAlbumAPIClient:
         # If this request does not fail, it will not return anything
         request.execute()
 
+    @log_api_call(logger=LOG)
     def create(self, album: Album) -> Album:
         """Creates an album in a user's Google Photos library.
 
@@ -129,6 +134,7 @@ class GooglePhotosAlbumAPIClient:
         response = request.execute()
         return Album(response)
 
+    @log_api_call(logger=LOG)
     def get(self, album_id: str) -> Album:
         """Returns the album based on the specified albumId. The albumId must be the ID of an album owned by the user
         or a shared album that the user has joined.
@@ -141,6 +147,7 @@ class GooglePhotosAlbumAPIClient:
         response = self._album_api.get(album_id).execute()
         return Album(response)
 
+    @log_api_call(logger=LOG)
     def list(self, page_size: int = 20, page_token: str = None, exclude_non_app_created_data: bool = False) -> \
             Generator[Sequence[Album], None, None]:
         """Lists all albums shown to a user in the Albums tab of the Google Photos app.
@@ -182,6 +189,7 @@ class GooglePhotosAlbumAPIClient:
             if next_page_token is None:
                 break
 
+    @log_api_call(logger=LOG)
     def patch(self, album: Album, update_mask: str) -> Album:
         """Update the album with the specified id. Only the id, title and coverPhotoMediaItemId fields of the album
         are read. The album must have been created by the developer via the API and must be owned by the user.
@@ -205,6 +213,7 @@ class GooglePhotosAlbumAPIClient:
         response = request.execute()
         return Album(response)
 
+    @log_api_call(logger=LOG)
     def share(self, album_id: str, shared_album_options: SharedAlbumOptions) -> ShareInfo:
         """Marks an album as shared and accessible to other users. This action can only be performed on albums which
         were created by the developer via the API.
@@ -222,6 +231,7 @@ class GooglePhotosAlbumAPIClient:
         response = request.execute()
         return ShareInfo(response['shareInfo'])
 
+    @log_api_call(logger=LOG)
     def unshare(self, album_id: str):
         """Marks a previously shared album as private. This means that the album is no longer shared and all the
         non-owners will lose access to the album. All non-owner content will be removed from the album. If a
