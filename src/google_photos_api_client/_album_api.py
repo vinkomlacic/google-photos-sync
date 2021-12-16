@@ -159,6 +159,11 @@ class GooglePhotosAlbumAPIClient:
         Implementation note: this function returns a generator. Since every yield statement means a request is
         executed, we want this behavior to be lazily executed so we don't query all albums in the API every time.
 
+        Example of usage:
+            for album_page in api.list():
+                for album in album_page:
+                    print(album.title)
+
         Args:
             page_size: Maximum number of albums to return in the response. Fewer albums might be returned than the
                 specified number. The default pageSize is 20, the maximum is 50.

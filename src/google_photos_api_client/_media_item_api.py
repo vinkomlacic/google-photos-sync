@@ -154,8 +154,10 @@ class GooglePhotosMediaItemAPIClient:
 
         return MediaItem(response)
 
-    def search(self, album_id: Optional[str] = None, page_size: Optional[int] = 25, page_token: Optional[str] = None,
-               filters: Optional[Filters] = None, order_by: Optional[str] = None) -> Generator:
+    def search(
+            self, album_id: Optional[str] = None, page_size: Optional[int] = 25, page_token: Optional[str] = None,
+            filters: Optional[Filters] = None, order_by: Optional[str] = None
+    ) -> Generator[Sequence[MediaItem], None, None]:
         """Searches for media items in a user's Google Photos library. If no filters are set, then all media items in
         the user's library are returned. If an album is set, all media items in the specified album are returned.
 
@@ -164,6 +166,11 @@ class GooglePhotosMediaItemAPIClient:
 
         Implementation note: this function returns a generator. Since every yield statement means a request is
         executed, we want this behavior to be lazily executed so we don't query all albums in the API every time.
+
+        Example of usage:
+            for media_item_page in api.list():
+                for media_item in media_item_page:
+                    print(media_item.filename)
 
         See https://developers.google.com/photos/library/reference/rest/v1/mediaItems/search for more information.
 
