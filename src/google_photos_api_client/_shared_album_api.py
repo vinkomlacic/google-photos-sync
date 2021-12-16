@@ -1,6 +1,6 @@
 import json
 import logging
-from typing import Generator, Sequence
+from typing import Generator, Sequence, Optional
 
 from google_photos_api_client.exceptions import GooglePhotosAPIError
 from google_photos_api_client.types import Album
@@ -59,8 +59,10 @@ class GooglePhotosSharedAlbumAPIClient:
         request.execute()
 
     @log_api_call(logger=LOG)
-    def list(self, page_size: int = 20, page_token: str = None, exclude_non_app_created_data: bool = False) -> \
-            Generator[Sequence[Album], None, None]:
+    def list(
+            self, page_size: Optional[int] = 20, page_token: Optional[str] = None,
+            exclude_non_app_created_data: Optional[bool] = False
+    ) -> Generator[Sequence[Album], None, None]:
         """Lists all shared albums available in the Sharing tab of the user's Google Photos app.
 
 

@@ -1,6 +1,6 @@
 import json
 import logging
-from typing import Sequence, Generator
+from typing import Sequence, Generator, Optional
 
 from google_photos_api_client.exceptions import GooglePhotosAPIError
 from google_photos_api_client.types import NewEnrichmentItem, AlbumPosition, to_dict, EnrichmentItem, Album, \
@@ -148,8 +148,10 @@ class GooglePhotosAlbumAPIClient:
         return Album(response)
 
     @log_api_call(logger=LOG)
-    def list(self, page_size: int = 20, page_token: str = None, exclude_non_app_created_data: bool = False) -> \
-            Generator[Sequence[Album], None, None]:
+    def list(
+            self, page_size: Optional[int] = 20, page_token: Optional[str] = None,
+            exclude_non_app_created_data: Optional[bool] = False
+    ) -> Generator[Sequence[Album], None, None]:
         """Lists all albums shown to a user in the Albums tab of the Google Photos app.
 
         See https://developers.google.com/photos/library/reference/rest/v1/albums/list for more information.
