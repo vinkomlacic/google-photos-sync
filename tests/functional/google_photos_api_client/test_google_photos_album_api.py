@@ -8,7 +8,7 @@ class TestGooglePhotosAlbumAPI(TestCase):
 
     def setUp(self):
         service_builder = GooglePhotosAPIServiceBuilder()
-        self.service = service_builder.get_service()
+        self.service = service_builder.build_service()
         self.album_api = GooglePhotosAlbumAPIClient(self.service)
 
     def tearDown(self):

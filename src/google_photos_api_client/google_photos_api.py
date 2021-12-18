@@ -3,10 +3,10 @@ import logging
 from googleapiclient.discovery import build
 
 from google_photos_api_client._album_api import GooglePhotosAlbumAPIClient
-from google_photos_api_client._google_auth import authenticate, GoogleApiAuthError
 from google_photos_api_client._media_item_api import GooglePhotosMediaItemAPIClient
 from google_photos_api_client._shared_album_api import GooglePhotosSharedAlbumAPIClient
 from google_photos_api_client.exceptions import GooglePhotosAPIError
+from google_photos_api_client.google_auth import GoogleApiAuthError, authenticate
 
 LOG = logging.getLogger('google_photos_sync.{}'.format(__name__))
 
@@ -41,7 +41,7 @@ class GooglePhotosAPIServiceBuilder:
         except GoogleApiAuthError as error:
             raise GooglePhotosAPIError('Could not instantiate Google Photos API.') from error
 
-    def get_service(self):
+    def build_service(self):
         """Returns a context manager."""
         try:
             return build(

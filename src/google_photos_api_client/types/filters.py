@@ -1,6 +1,5 @@
-from collections import Sequence
 from enum import Enum
-from typing import Optional
+from typing import Optional, Sequence
 
 
 __all__ = ['Filters', 'DateFilter', 'Date', 'DateRange', 'ContentFilter', 'ContentCategory', 'MediaTypeFilter',
