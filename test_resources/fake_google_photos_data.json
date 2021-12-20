@@ -1,0 +1,90 @@
+{
+  "albums": [
+    {
+      "id": "1",
+      "title": "Test album 1",
+      "productUrl": "https://www.example.org",
+      "isWritable": false,
+      "mediaItemsCount": 2,
+      "coverPhotoBaseUrl": "https://www.example.org",
+      "coverPhotoMediaItemId": "1"
+    },
+    {
+      "id": "2",
+      "title": "Test album 2",
+      "productUrl": "https://www.example.org",
+      "isWritable": true,
+      "mediaItemsCount": 1,
+      "coverPhotoBaseUrl": "https://www.example.org",
+      "coverPhotoMediaItemId": "3"
+    }
+  ],
+
+  "mediaItems": [
+    {
+      "id": "1",
+      "description": "This is a description of a photo",
+      "productUrl": "https://www.example.org",
+      "baseUrl": "https://www.example.org",
+      "mime_type": "application/json",
+      "mediaMetadata": {
+        "creationTime": "2014-10-02T15:01:23Z",
+        "width": 400,
+        "height": 600,
+        "photo": {
+          "cameraMake": "Nikon",
+          "cameraModel": "Model X",
+          "focalLength": 1.2,
+          "apertureFNumber": 2,
+          "isoEquivalent": 5,
+          "exposureTime": "3.5s"
+        }
+      },
+      "contributorInfo": {
+        "profilePictureBaseUrl": "https://www.google.com",
+        "displayName": "Test McTesty"
+      }
+    },
+    {
+      "id": "2",
+      "description": "This is a description of a photo",
+      "productUrl": "https://www.example.org",
+      "baseUrl": "https://www.example.org",
+      "mime_type": "application/json",
+      "mediaMetadata": {
+        "creationTime": "2014-10-02T15:01:23Z",
+        "width": 400,
+        "height": 600,
+        "video": {
+          "cameraMake": "Canon",
+          "cameraModel": "900",
+          "fps": 24.3,
+          "status": "READY"
+        }
+      }
+    }
+  ],
+
+  "sharedAlbums": [
+    {
+      "id": "3",
+      "title": "Test shared album 1",
+      "productUrl": "https://www.example.org",
+      "isWritable": false,
+      "mediaItemsCount": 1,
+      "coverPhotoBaseUrl": "https://www.example.org",
+      "coverPhotoMediaItemId": "4",
+      "shareInfo": {
+        "sharedAlbumOptions": {
+          "isCollaborative": true,
+          "isCommentable": true
+        },
+        "shareableUrl": "https://www.example.org",
+        "shareToken": "This is a token",
+        "isJoined": true,
+        "isOwned": true,
+        "isJoinable": true
+      }
+    }
+  ]
+}
