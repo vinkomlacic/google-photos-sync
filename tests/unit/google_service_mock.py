@@ -2,11 +2,14 @@ import json
 from typing import Callable, Optional, Sequence
 
 
-class MockGooglePhotoService:
+__all__ = ['MockGooglePhotosService', 'MockRequest']
+
+
+class MockGooglePhotosService:
     """Mock service used for unit testing. Instead of actually contacting the Google server, it will retrieve the
     data from test_resources/fake_google_photos_data.json."""
 
-    def __init__(self, fake_data_json_file_name: str = 'fake_google_photos_data.json'):
+    def __init__(self, fake_data_json_file_name: str = 'test_resources/fake_google_photos_data.json'):
         with open(fake_data_json_file_name) as file:
             self.data = json.load(file)
             self._album_api = AlbumMockService(self.data)
@@ -109,18 +112,18 @@ class AlbumMockService:
     def __init__(self, data):
         self._albums = data['albums']
 
-    def add_enrichment(self, album_id: str) -> MockRequest:
+    def addEnrichment(self, album_id: str) -> MockRequest:
         """Returns a random enrichment item."""
         def create_add_enrichment_response(mock_request: MockRequest) -> dict:
             return {'enrichmentItem': {'id': 'new ID'}}
 
         return MockRequest(create_add_enrichment_response)
 
-    def batch_add_media_items(self, album_id: str) -> MockRequest:
+    def batchAddMediaItems(self, album_id: str) -> MockRequest:
         """Returns an empty response ({})."""
         return MockRequest(create_empty_response)
 
-    def batch_remove_media_items(self, album_id: str) -> MockRequest:
+    def batchRemoveMediaItems(self, album_id: str) -> MockRequest:
         """Returns an empty response ({})."""
         return MockRequest(create_empty_response)
 
@@ -181,7 +184,7 @@ class MediaItemsMockService:
     def __init__(self, data):
         self._media_items = data['mediaItems']
 
-    def batch_create(self) -> MockRequest:
+    def batchCreate(self) -> MockRequest:
         """Returns the new media item results where each result has upload token value set as the description of the
         media item sent in the request.
         """
@@ -195,7 +198,7 @@ class MediaItemsMockService:
 
         return MockRequest(create_batch_create_response)
 
-    def batch_get(self, mediaItemIds: Sequence[str]) -> MockRequest:
+    def batchGet(self, mediaItemIds: Sequence[str]) -> MockRequest:
         """Returns and empty media item result for every media item found in the fake data."""
         def create_batch_get_response(mock_request: MockRequest) -> dict:
             media_item_results = []
