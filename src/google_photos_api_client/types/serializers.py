@@ -1,5 +1,7 @@
 __all__ = ['to_dict']
 
+from enum import Enum
+
 JSON_DATA_TYPES = [str, int, float, None, list, tuple, dict]
 
 
@@ -16,9 +18,14 @@ def to_dict(obj):
         if value is None:
             continue
 
-        if type(value) not in JSON_DATA_TYPES:
-            data[key] = to_dict(value)
-        else:
+        # For the primitive types, we just save them
+        if type(value) in JSON_DATA_TYPES:
             data[key] = value
+        # For enum types, we save the value part in the dict
+        elif issubclass(type(value), Enum):
+            data[key] = value.value
+        # We expect that all other types have a __dict__ method
+        else:
+            data[key] = to_dict(value)
 
     return data
