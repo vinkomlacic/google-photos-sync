@@ -63,7 +63,7 @@ class GooglePhotosAlbumAPIClient:
             media_item_ids: Identifiers of the MediaItems to be added. The maximum number of media items that can be
                 added in one call is 50.
         """
-        if len(media_item_ids) != 0:
+        if len(media_item_ids) == 0:
             raise GooglePhotosAPIError(
                 f'{self.__class__.__name__}: You need to provide a non-empty list of media_item_ids.'
             )
