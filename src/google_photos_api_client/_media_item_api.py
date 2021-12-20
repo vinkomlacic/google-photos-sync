@@ -161,7 +161,7 @@ class GooglePhotosMediaItemAPIClient:
         """Searches for media items in a user's Google Photos library. If no filters are set, then all media items in
         the user's library are returned. If an album is set, all media items in the specified album are returned.
 
-        If filters are specified, media items that match the filters from the user's library are listed.
+        If filters are specified, media items that match the filters from the users library are listed.
         If you set both the album and the filters, the request results in an error.
 
         Implementation note: this function returns a generator. Since every yield statement means a request is

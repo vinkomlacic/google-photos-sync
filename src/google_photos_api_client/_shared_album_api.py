@@ -3,7 +3,7 @@ import logging
 from typing import Generator, Sequence, Optional
 
 from google_photos_api_client.exceptions import GooglePhotosAPIError
-from google_photos_api_client.types import Album
+from google_photos_api_client.types import SharedAlbum
 from google_photos_api_client.utils import log_api_call
 
 LOG = logging.getLogger('google_photos_sync.{}'.format(__name__))
@@ -20,7 +20,7 @@ class GooglePhotosSharedAlbumAPIClient:
         self._shared_album_api = service.shared_albums()
 
     @log_api_call(logger=LOG)
-    def get(self, share_token: str) -> Album:
+    def get(self, share_token: str) -> SharedAlbum:
         """Returns the album based on the specified shareToken.
 
         Args:
@@ -28,10 +28,10 @@ class GooglePhotosSharedAlbumAPIClient:
         """
         response = self._shared_album_api.get(share_token).execute()
 
-        return Album(response)
+        return SharedAlbum(response)
 
     @log_api_call(logger=LOG)
-    def join(self, share_token: str) -> Album:
+    def join(self, share_token: str) -> SharedAlbum:
         """Joins a shared album on behalf of the Google Photos user.
 
         Args:
@@ -42,7 +42,7 @@ class GooglePhotosSharedAlbumAPIClient:
 
         response = request.execute()
 
-        return Album(response['album'])
+        return SharedAlbum(response['album'])
 
     @log_api_call(logger=LOG)
     def leave(self, share_token: str):
@@ -62,7 +62,7 @@ class GooglePhotosSharedAlbumAPIClient:
     def list(
             self, page_size: Optional[int] = 20, page_token: Optional[str] = None,
             exclude_non_app_created_data: Optional[bool] = False
-    ) -> Generator[Sequence[Album], None, None]:
+    ) -> Generator[Sequence[SharedAlbum], None, None]:
         """Lists all shared albums available in the Sharing tab of the user's Google Photos app.
 
         See https://developers.google.com/photos/library/reference/rest/v1/sharedAlbums/list for more information.
@@ -101,7 +101,7 @@ class GooglePhotosSharedAlbumAPIClient:
 
             albums = response.get('albums')
             if albums:
-                yield [Album(album) for album in albums], next_page_token
+                yield [SharedAlbum(album) for album in albums], next_page_token
 
             # Break the loop if there are no more pages to go
             if next_page_token is None:
