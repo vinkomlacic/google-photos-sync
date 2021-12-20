@@ -1,8 +1,6 @@
 __all__ = ['to_dict']
 
-from typing import Sequence
-
-JSON_DATA_TYPES = [str, int, float, None, Sequence, dict]
+JSON_DATA_TYPES = [str, int, float, None, list, tuple, dict]
 
 
 def to_dict(obj):
