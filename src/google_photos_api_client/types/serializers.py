@@ -14,6 +14,10 @@ def to_dict(obj):
     data = {}
 
     for key, value in obj.__dict__.items():
+        # We don't save None values in the dict
+        if value is None:
+            continue
+
         if type(value) not in JSON_DATA_TYPES:
             data[key] = to_dict(value)
         else:
